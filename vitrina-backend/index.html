@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Control - Vitrinas Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0f0f0f; color: white; padding: 20px; }
+        h1 { border-bottom: 2px solid #333; padding-bottom: 10px; color: #00ed64; display: flex; justify-content: space-between; align-items: center; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        
+        /* Estilos de las tarjetas */
+        .card { 
+            background: #1e1e1e; 
+            padding: 20px; 
+            border-radius: 15px; 
+            border-left: 5px solid #00ed64; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: scale(1.02); }
+
+        /* Colores por tipo */
+        .tipo-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .Manga { background: #3498db; }
+        .Figura { background: #e67e22; }
+        .Carta { background: #9b59b6; }
+        .Camisa { background: #e74c3c; } /* Rojo para Camisas */
+        .Joyería { background: #f1c40f; color: black; } /* Dorado para Joyas */
+
+        .temp { font-size: 2em; color: #00ed64; font-weight: bold; margin: 15px 0; text-align: center; }
+        
+        .badge-nuevo {
+            background-color: #00ed64;
+            color: #121212;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .alerta-seguridad { color: #ff4d4d; font-size: 0.8em; animation: pulse 1s infinite; }
+    </style>
+</head>
+<body>
+    <h1>
+        <span>🚀 Panel de Control Vitrina Pro</span>
+        <span id="reloj" style="font-size: 0.5em; color: #888;"></span>
+    </h1>
+
+    <div id="contenedor" class="grid">
+        </div>
+
+    <script>
+        // Diccionario de Iconos
+        const iconos = {
+            'Manga': '📖',
+            'Figura': '🧸',
+            'Carta': '🃏',
+            'Camisa': '👕',
+            'Joyería': '💍'
+        };
+
+        async function cargarProductos() {
+            try {
+                const res = await fetch('http://localhost:3000/api/productos');
+                const datos =
