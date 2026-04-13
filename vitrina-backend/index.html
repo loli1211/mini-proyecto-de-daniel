@@ -75,4 +75,45 @@
         async function cargarProductos() {
             try {
                 const res = await fetch('http://localhost:3000/api/productos');
-                const datos =
+                const datos = await res.json();
+                const contenedor = document.getElementById('contenedor');
+                contenedor.innerHTML = '';
+
+                if (datos.length === 0) {
+                    contenedor.innerHTML = '<p style="color:#888; grid-column: 1/-1; text-align:center;">No hay productos registrados.</p>';
+                    return;
+                }
+
+                datos.forEach(p => {
+                    const icono = iconos[p.tipo] || '📦';
+                    const colorTemp = p.tempActual > 28 ? '#ff4d4d' : '#00ed64';
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="font-size:1.2em;">${icono} ${p.nombre}</strong>
+                            <span class="tipo-badge ${p.tipo}">${p.tipo}</span>
+                        </div>
+                        <div class="temp" style="color:${colorTemp}">${p.tempActual}°C</div>
+                        <small style="color:#666;">Registrado: ${new Date(p.fecha).toLocaleString()}</small>
+                    `;
+                    contenedor.appendChild(card);
+                });
+            } catch (e) {
+                document.getElementById('contenedor').innerHTML = '<p style="color:#ff4d4d; grid-column: 1/-1; text-align:center;">Error de conexión con el servidor.</p>';
+            }
+        }
+
+        // Reloj en tiempo real
+        function actualizarReloj() {
+            document.getElementById('reloj').textContent = new Date().toLocaleTimeString();
+        }
+
+        // Cargar productos cada 5 segundos y actualizar reloj cada segundo
+        cargarProductos();
+        setInterval(cargarProductos, 5000);
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj();
+    </script>
+</body>
+</html>

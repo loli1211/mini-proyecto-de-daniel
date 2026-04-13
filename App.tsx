@@ -18,7 +18,7 @@ export default function App() {
   const [editandoId, setEditandoId] = useState<string | null>(null);
 
   // RECUERDA: Cambia esta IP por la de tu PC actual
-  const API_URL = 'http://192.168.0.108:3000/api';
+  const API_URL = 'http://10.120.44.40:3000/api';
 
   const obtenerProductos = async () => {
     try {
